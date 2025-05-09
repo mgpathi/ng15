@@ -1,0 +1,55 @@
+<!-- <div class="container mt-3">
+  <div class="row">
+    <textarea [(ngModel)]="clipboardData1" (input)="processData()" 
+    style="height: 100%;min-height: 150px;"  placeholder="Paste your Excel data here"></textarea>
+  </div>
+</div>
+<div class="container mt-3">
+  <form [formGroup]="myForm" (ngSubmit)="saveData()">
+    <div formArrayName="rows">
+      <div class="row" *ngFor="let row of rowsControls; let rowIndex = index" [formGroupName]="rowIndex">
+        <div class="col" *ngFor="let controlName of row.value | keys">
+          <label>{{ controlName }}</label>
+          <input formControlName="{{controlName}}" />
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+  </form>
+</div> -->
+
+
+<!-- starts here -->
+<!-- app.component.html -->
+<div class="container" *ngIf="myForm">
+<form [formGroup]="myForm" (ngSubmit)="saveData()">
+  <div formArrayName="columnTypes">
+    <div *ngFor="let control of columnControls; let columnIndex = index" [formGroupName]="columnIndex">
+      <label>Type for Column {{ columnIndex + 1 }}</label>
+      <select formControlName="type">
+        <option value="text">Text</option>
+        <option value="number">Number</option>
+        <!-- Add more options based on your types -->
+      </select>
+      <button type="button" (click)="removeColumn(columnIndex)">Remove Column</button>
+    </div>
+  </div>
+
+  <textarea [(ngModel)]="clipboardData" (paste)="processData($event)" placeholder="Paste your Excel data here"></textarea>
+
+  <div formArrayName="rows">
+    <div *ngFor="let row of rowsControls; let rowIndex = index" [formGroupName]="rowIndex">
+      <div *ngFor="let controlName of row.value | keys">
+        <label>{{ controlName }}</label>
+        <input [formControlName]="controlName"/>
+      </div>
+      <button type="button" (click)="removeRow(rowIndex)">Remove Row</button>
+    </div>
+  </div>
+
+  <button type="submit">Save</button>
+</form>
+</div>
